@@ -4,6 +4,12 @@
 # @File : adminx.py
 # @Function:
 
+# -*- coding: utf-8 -*-
+# @Time : 2018/9/19 下午2:04
+# @Author : chengang
+# @File : adminx.py
+# @Function:
+
 import xadmin
 from xadmin import views
 from .models import VerifyCode
@@ -15,8 +21,8 @@ class BaseSetting(object):
 
 
 class GlobalSettings(object):
-    site_title = "慕学生鲜后台"
-    site_footer = "mxshop"
+    site_title = "XServer"
+    site_footer = "xs"
     # menu_style = "accordion"
 
 

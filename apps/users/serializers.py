@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-__author__ = 'bobby'
 import re
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
@@ -9,7 +8,7 @@ from rest_framework.validators import UniqueValidator
 
 from .models import VerifyCode
 
-from XShop.settings import REGEX_MOBILE
+from XServer.settings import REGEX_MOBILE
 
 User = get_user_model()
 
