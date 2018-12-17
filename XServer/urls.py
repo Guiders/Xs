@@ -5,13 +5,16 @@ from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.documentation import include_docs_urls
+
+from sport.views import *
 from users.views import SmsCodeViewset, UserViewset
 import xadmin
 from XServer.settings import MEDIA_ROOT
 
 router = DefaultRouter()
-router.register(r'users', UserViewset, base_name="users")
-router.register(r'codes', SmsCodeViewset, base_name="codes")
+router.register(r'action', ActionViewSet, base_name="action")
+router.register(r'program', NormalProgramViewSet, base_name="program")
+router.register(r'challenge', ChallengeViewSet, base_name="challenge")
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),

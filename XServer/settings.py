@@ -28,7 +28,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['172.31.7.134','127.0.0.1']
 
 AUTH_USER_MODEL = 'users.UserProfile'
 
@@ -42,6 +42,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'sport',
+    'testapp',
     'xadmin',
     'DjangoUeditor',
     'crispy_forms',
