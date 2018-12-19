@@ -148,7 +148,7 @@ class ChallengeAdmin(object):
         current_uri = '{scheme}://{host}{media}{img}'.format(scheme=self.request.scheme,
                                                              host=self.request.get_host(), media=MEDIA_URL,
                                                              img=instance.imgCover)
-        return """ <img width="80" height="80" src="{src}">""".format(base=current_uri)
+        return """ <img width="80" height="80" src="{src}">""".format(src=current_uri)
 
     show_img_cover.short_description = "封面图"
     show_img_cover.allow_tags = True
@@ -189,10 +189,24 @@ class ChallengeAdmin(object):
 
 
 class LanguageBaseAdmin(object):
-    list_display = ['language']
+    list_display = ['language', 'show_link']
     list_editable = ['language']
     search_fields = ['language']
     list_filter = ['language']
+
+    def show_link(self, instance):
+        apis = ['challenge', 'action', 'program']
+        a_fmt = """<a href="{scheme}://{host}/{api}/?format=json&language={language}">{key}</a>"""
+        result = ''
+        for api in apis:
+            result += a_fmt.format(scheme=self.request.scheme,host=self.request.get_host(), api=api, language=instance.id, key=api) + "\t"
+        print(result)
+
+        return result
+
+    show_link.short_description = "json文件"
+    show_link.allow_tags = True
+    show_link.is_column = True
 
 
 class LanguageActionAdmin(object):
@@ -216,6 +230,13 @@ class LanguageChallengeAdmin(object):
     list_filter = ['challenge', 'language', 'challengeName']
 
 
+class ImgAdmin(object):
+    list_display = ['img', 'imgType']
+    list_editable = ['img', ]
+    search_fields = ['img', 'imgType']
+    list_filter = ['img', 'imgType']
+
+
 xadmin.site.register(Action, ActionAdmin)
 xadmin.site.register(Program, ProgramAdmin)
 xadmin.site.register(Challenge, ChallengeAdmin)
@@ -223,3 +244,4 @@ xadmin.site.register(LanguageBase, LanguageBaseAdmin)
 xadmin.site.register(LanguageAction, LanguageActionAdmin)
 xadmin.site.register(LanguageProgram, LanguageProgramAdmin)
 xadmin.site.register(LanguageChallenge, LanguageChallengeAdmin)
+xadmin.site.register(Image, ImgAdmin)

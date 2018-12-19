@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls')),
-    url(r'docs/', include_docs_urls(title="xshop")),
+    url(r'docs/', include_docs_urls(title="XServer")),
 
     # drf自带的token认证模式
     url(r'^api-token-auth/', views.obtain_auth_token),

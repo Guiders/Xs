@@ -30,6 +30,9 @@ class VerifyCodeAdmin(object):
     list_display = ['code', 'mobile', "create_time"]
 
 
-xadmin.site.register(VerifyCode, VerifyCodeAdmin)
+# <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+
+
+# xadmin.site.register(VerifyCode, VerifyCodeAdmin)
 xadmin.site.register(views.BaseAdminView, BaseSetting)
 xadmin.site.register(views.CommAdminView, GlobalSettings)

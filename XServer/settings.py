@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 import sys
 
+from django.core.files.storage import FileSystemStorage
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, BASE_DIR)
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
@@ -28,7 +30,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['172.31.7.134','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'users.UserProfile'
 
@@ -164,3 +166,29 @@ JWT_AUTH = {
 
 # 手机号码正则表达式
 REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
+
+
+class ImageStorage(FileSystemStorage):
+    from django.conf import settings
+
+    def __init__(self, location=settings.MEDIA_ROOT, base_url=settings.MEDIA_URL):
+        # 初始化
+        super(ImageStorage, self).__init__(location, base_url)
+
+    # 重写 _save方法
+    def _save(self, name, content):
+        import os, time, random
+        # 文件扩展名
+
+        ext = os.path.splitext(name)[1]
+        if len(str(ext)) <= 0:
+            ext = '.jpg'
+        # 文件目录
+        d = os.path.dirname(name)
+        # 定义文件名，年月日时分秒随机数
+        fn = time.strftime('%Y%m%d%H%M%S')
+        fn = fn + '_%d' % random.randint(0, 100)
+        # 重写合成文件名
+        name = os.path.join(d, fn + ext)
+        # 调用父类方法
+        return super(ImageStorage, self)._save(name, content)
