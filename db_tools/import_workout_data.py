@@ -14,22 +14,8 @@ import django
 
 django.setup()
 from sport.models import Program
+from sport.models import LanguageProgram
 
-
-# {
-#         "programName": "2 - Minute Trial Progress",
-#         "pgmId": 60,
-#         "chargeType": 0,
-#         "totalTime": 120,
-#         "kcal": 160,
-#         "level": 1,
-#         "programDesc": "Welcom to FatGo！You are provided with rich exercise programs which help you achieve different goals. First, let's try the 2-minute Trial Progress, so you can have a idea how amazingly FatGo serves you.  ",
-#         "pgmType": 0,
-#         "imgCover": "imgs/img_2min.jpg",
-#         "imgCoverBig": "http://cdn.download.mpcfiles.info/uploadonly/201811/103/e542a4aea54525169bc811ee5cfce406.jpg",
-#         "restIndexArray": "",
-#         "actionIds": "80;103;81;100"
-#     }
 
 def save_workout(workoutList):
     for row in workoutList:
@@ -55,9 +41,9 @@ def set_challenge_id(pgmId, challenge_id):
     pgm.save()
 
 
-if __name__ == '__main__':
+def save():
     from db_tools.data.workout_data import workoutList
-    # 保存workout.json
+
     save_workout(workoutList)
     from db_tools.data.plan_data import workoutList, planList
 
@@ -74,3 +60,43 @@ if __name__ == '__main__':
     for challenge in planList:
         for program in challenge.get("programList"):
             set_challenge_id(program.get('pgmId'), challenge.get("challengeId"))
+
+
+def insert_translate(workoutList, language_id=1):
+    for data in workoutList:
+        try:
+            language = LanguageProgram.objects.get(program__pgmId=data['pgmId'], language_id=language_id)
+            language.programName = data['programName']
+            language.programDesc = data['programDesc']
+            language.save()
+            print('save', data['pgmId'])
+        except Exception as e:
+            print(e)
+
+
+def translate_pt():
+    from db_tools.data.py_workout_data import workoutList
+
+    insert_translate(workoutList, 1)
+    from db_tools.data.pt_plan_data import workoutList, planList
+
+    # 保存plan.json 保存workout
+    insert_translate(workoutList, 1)
+    for challenge in planList:
+        insert_translate(challenge.get("programList", []), 1)
+
+
+def translate():
+    from db_tools.data.workout_data import workoutList
+
+    insert_translate(workoutList, 2)
+    from db_tools.data.plan_data import workoutList, planList
+
+    # 保存plan.json 保存workout
+    insert_translate(workoutList, 2)
+    for challenge in planList:
+        insert_translate(challenge.get("programList", []),2)
+
+
+if __name__ == '__main__':
+    translate()

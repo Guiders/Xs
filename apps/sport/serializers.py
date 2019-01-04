@@ -19,8 +19,6 @@ class NormalProgramSerializer(serializers.ModelSerializer):
         exclude = ('challenge',)
 
 
-
-
 class ChallengeSerializer(serializers.ModelSerializer):
     programList = serializers.SerializerMethodField()
 
@@ -30,12 +28,14 @@ class ChallengeSerializer(serializers.ModelSerializer):
 
     def get_programList(self, obj):
         ids = [int(pgmId) for pgmId in str(obj.pgmIds).split(';')]
+        print('result0', ids)
         result = [0] * len(ids)
 
         programs = Program.objects.filter(pgmId__in=ids)
+        print('result1', [index.pgmId for index in programs])
         for program in programs:
             challenge_json = NormalProgramSerializer(program, many=False,
                                                      context={'request': self.context['request']}).data
             result[ids.index(program.pgmId)] = challenge_json
-
+        print('result2', [index.get('pgmId') for index in result])
         return result
